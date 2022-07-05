@@ -441,16 +441,6 @@ Parameters for optimizer:
 ### Training
 
 
-```bash
-```
-
-The command above will run in the background, you can view training logs in pretraining_log.txt. After training finished, you will get some checkpoint files under the script folder by default. The loss values will be displayed as follows:
-
-```text
-# grep "epoch" pretraining_log.txt
-epoch: 0.0, current epoch percent: 0.000, step: 1, outputs are (Tensor(shape=[1], dtype=Float32, [ 1.0856101e+01]), Tensor(shape=[], dtype=Bool, False), Tensor(shape=[], dtype=Float32, 65536))
-epoch: 0.0, current epoch percent: 0.000, step: 2, outputs are (Tensor(shape=[1], dtype=Float32, [ 1.0821701e+01]), Tensor(shape=[], dtype=Bool, False), Tensor(shape=[], dtype=Float32, 65536))
-...
 ```
 
 #### Running on GPU
@@ -484,19 +474,7 @@ epoch: 0.0, current epoch percent: 0.000, step: 2, outputs are (Tensor(shape=[1]
 ### Distributed Training
 
 
-```bash
-```
-
-The command above will run in the background, you can view training logs in pretraining_log.txt. After training finished, you will get some checkpoint files under the LOG* folder by default. The loss value will be displayed as follows:
-
-```text
-# grep "epoch" LOG*/pretraining_log.txt
-epoch: 0.0, current epoch percent: 0.001, step: 100, outputs are (Tensor(shape=[1], dtype=Float32, [ 1.08209e+01]), Tensor(shape=[], dtype=Bool, False), Tensor(shape=[], dtype=Float32, 65536))
-epoch: 0.0, current epoch percent: 0.002, step: 200, outputs are (Tensor(shape=[1], dtype=Float32, [ 1.07566e+01]), Tensor(shape=[], dtype=Bool, False), Tensor(shape=[], dtype=Float32, 65536))
-...
-epoch: 0.0, current epoch percent: 0.001, step: 100, outputs are (Tensor(shape=[1], dtype=Float32, [ 1.08218e+01]), Tensor(shape=[], dtype=Bool, False), Tensor(shape=[], dtype=Float32, 65536))
-epoch: 0.0, current epoch percent: 0.002, step: 200, outputs are (Tensor(shape=[1], dtype=Float32, [ 1.07770e+01]), Tensor(shape=[], dtype=Bool, False), Tensor(shape=[], dtype=Float32, 65536))
-...
+`
 ```
 
 #### Running on GPU
@@ -608,55 +586,28 @@ acc_num 8096 , total_num 9815, accuracy 0.824860
 ## [Performance](#contents)
 
 ### Pretraining Performance
+| Parameters                 |  GPU                       |
+| -------------------------- | ------------------------- |
+| Model Version              | BERT_base                 |
+| Resource                   |NV SMX2 V100-16G, cpu: Intel(R) Xeon(R) Platinum 8160 CPU @2.10GHz, memory: 256G         |
+| uploaded Date              |  07/05/2021                |
+| MindSpore Version          |  1.3.0                     |
+| Dataset                    |  cn-wiki-128(4000w)        |
+| Training Parameters        |  pretrain_config.yaml      |
+| Optimizer                  |  AdamWeightDecay           |
+| Loss Function              |  SoftmaxCrossEntropy       |
+| outputs                    |  probability               |
+| Epoch                      |  40                        |
+| Batch_size                 | 32*8                      |
+| Loss                       |  1.7                       |
+| Speed                      | 180ms/step                |
+| Total time                 |  610H                      |
+| Params (M)                 |  110M                      |
+| Checkpoint for Fine tuning |1.2G(.ckpt file)          |
+| Scripts                    |  [BERT_base](https://gitee.com/mindspore/models/tree/master/official/nlp/bert)     |
 
-| -------------------------- | ---------------------------------------------------------- | ------------------------- |
-| Model Version              | BERT_base                                                  | BERT_base                 |
-| uploaded Date              | 07/05/2021                                                 | 07/05/2021                |
-| MindSpore Version          | 1.3.0                                                      | 1.3.0                     |
-| Dataset                    | cn-wiki-128(4000w)                                         | cn-wiki-128(4000w)        |
-| Training Parameters        | pretrain_config.yaml                                       | pretrain_config.yaml      |
-| Optimizer                  | Lamb                                                       | AdamWeightDecay           |
-| Loss Function              | SoftmaxCrossEntropy                                        | SoftmaxCrossEntropy       |
-| outputs                    | probability                                                | probability               |
-| Epoch                      | 40                                                         | 40                        |
-| Batch_size                 | 256*8                                                      | 32*8                      |
-| Loss                       | 1.7                                                        | 1.7                       |
-| Speed                      | 284ms/step                                                 | 180ms/step                |
-| Total time                 | 63H                                                        | 610H                      |
-| Params (M)                 | 110M                                                       | 110M                      |
-| Checkpoint for Fine tuning | 1.2G(.ckpt file)                                           | 1.2G(.ckpt file)          |
-| Scripts                    | [BERT_base](https://gitee.com/mindspore/models/tree/master/official/nlp/bert)  | [BERT_base](https://gitee.com/mindspore/models/tree/master/official/nlp/bert)     |
 
-| -------------------------- | ---------------------------------------------------------- |
-| Model Version              | BERT_NEZHA                                                 |
-| uploaded Date              | 07/05/2021                                                 |
-| MindSpore Version          | 1.3.0                                                      |
-| Dataset                    | cn-wiki-128(4000w)                                         |
-| Training Parameters        | src/config.py                                              |
-| Optimizer                  | Lamb                                                       |
-| Loss Function              | SoftmaxCrossEntropy                                        |
-| outputs                    | probability                                                |
-| Epoch                      | 40                                                         |
-| Batch_size                 | 96*8                                                       |
-| Loss                       | 1.7                                                        |
-| Speed                      | 320ms/step                                                 |
-| Total time                 | 180h                                                       |
-| Params (M)                 | 340M                                                       |
-| Checkpoint for Fine tuning | 3.2G(.ckpt file)                                           |
-| Scripts                    | [BERT_NEZHA](https://gitee.com/mindspore/models/tree/master/official/nlp/bert)  |
 
-#### Inference Performance
-
-| -------------------------- | ----------------------------- |
-| Model Version              |                               |
-| uploaded Date              | 07/05/2021                    |
-| MindSpore Version          | 1.3.0                         |
-| Dataset                    | cola, 1.2W                    |
-| batch_size                 | 32(1P)                        |
-| Accuracy                   | 0.588986                      |
-| Speed                      | 59.25ms/step                  |
-| Total time                 | 15min                         |
-| Model for inference        | 1.2G(.ckpt file)              |
 
 # [Description of Random Situation](#contents)
 
